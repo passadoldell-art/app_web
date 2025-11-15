@@ -1,35 +1,64 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>แนะนำหุ้น Tech</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100..900&family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Test - Cute Pink UI</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    <h1>กระดานแนะนำหุ้นเทคโนโลยีชั้นนำ</h1>
-    <p>คลิ๊กเพื่อดูรายละเอียดเพิ่มเติม</p>
-  </header>
 
-  <main id="companyList"></main>
+<h1>💗 CRUD Tester (GET / POST / PUT / DELETE) 💗</h1>
 
-  <div id="overlay" style="display: none;">
-    <article class="overlay-box">
-      <img id="overlayLogo" src="" alt="">
-      <h2 id="overlayTitle"></h2>
-      <p id="overlayDesc"></p>
-      <a id="overlayLink" href="#" target="_blank">ดูกราฟ</a>
-      <button id="closeBtn">ปิด</button>
-    </article>
-  </div>
+<div class="container">
 
-  <footer>
-    © พัฒนาโดย นายชัชรินทร์ เลิศยศบดินทร์
-  </footer>
-  <script src="script.js"></script>
+    <!-- GET ALL USERS -->
+    <section class="card">
+        <h2>📌 GET: ดึงผู้ใช้ทั้งหมด</h2>
+        <button onclick="getUsers()">GET /api/users</button>
+        <pre id="getResult"></pre>
+    </section>
+
+    <!-- GET BY ID -->
+    <section class="card">
+        <h2>🔍 GET: ดึงข้อมูลผู้ใช้ตาม ID</h2>
+        <input id="getId" placeholder="ระบุ user_id">
+        <button onclick="getUserById()">GET /api/users/:id</button>
+        <pre id="getByIdResult"></pre>
+    </section>
+
+    <!-- POST USER -->
+    <section class="card">
+        <h2>✨ POST: เพิ่มผู้ใช้ใหม่</h2>
+        <input id="postId" placeholder="กำหนด id (ไม่ใส่ก็ได้)">
+        <input id="postName" placeholder="name">
+        <input id="postEmail" placeholder="email">
+        <input id="postRole" placeholder="role">
+        <button onclick="postUser()">POST /api/users</button>
+        <pre id="postResult"></pre>
+    </section>
+
+    <!-- PUT USER -->
+    <section class="card">
+        <h2>💎 PUT: อัปเดตผู้ใช้</h2>
+        <input id="putId" placeholder="user_id ที่ต้องการแก้ไข">
+        <input id="putName" placeholder="name (optional)">
+        <input id="putEmail" placeholder="email (optional)">
+        <input id="putRole" placeholder="role (optional)">
+        <button onclick="putUser()">PUT /api/users/:id</button>
+        <pre id="putResult"></pre>
+    </section>
+
+    <!-- DELETE USER -->
+    <section class="card">
+        <h2>💔 DELETE: ลบผู้ใช้</h2>
+        <input id="deleteId" placeholder="user_id">
+        <button onclick="deleteUser()">DELETE /api/users/:id</button>
+        <pre id="deleteResult"></pre>
+    </section>
+
+</div>
+
+<script src="scripts.js"></script>
 </body>
 </html>
