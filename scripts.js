@@ -1,83 +1,62 @@
-const companyList = document.getElementById("companyList");
-const overlay = document.getElementById("overlay");
-const closeButton = document.getElementById("closeBtn");
-const overlayLogo = document.getElementById("overlayLogo");
-const overlayTitle = document.getElementById("overlayTitle");
-const overlayDesc = document.getElementById("overlayDesc");
-const overlayLink = document.getElementById("overlayLink");
+const BASE_URL = "https://app-87q3k0clt-flasks-projects-987fd076.vercel.app/api/users";
 
-function openOverlay() {
-  overlay.style.display = "flex";
-  document.body.classList.add("modal-open");
+// ---------------- GET ALL USERS ----------------
+async function getUsers() {
+    const res = await fetch(BASE_URL);
+    document.getElementById("getResult").textContent = await res.text();
 }
 
-function closeOverlay() {
-  overlay.style.display = "none";
-  document.body.classList.remove("modal-open");
+// ---------------- GET BY ID ----------------
+async function getUserById() {
+    const id = document.getElementById("getId").value.trim();
+    if (!id) return alert("กรุณากรอก user_id");
+
+    const res = await fetch(`${BASE_URL}/${id}`);
+    document.getElementById("getByIdResult").textContent = await res.text();
 }
 
-function handleOverlayClick(event) {
-  const clickedElement = event.target;
-  const isInsideBox = clickedElement.closest(".overlay-box");
-  if (isInsideBox === null) {
-    closeOverlay();
-  }
+// ---------------- POST USER ----------------
+async function postUser() {
+    const data = {
+        id: document.getElementById("postId").value.trim() || undefined,
+        name: document.getElementById("postName").value.trim(),
+        email: document.getElementById("postEmail").value.trim(),
+        role: document.getElementById("postRole").value.trim(),
+    };
+
+    const res = await fetch(BASE_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+    });
+
+    document.getElementById("postResult").textContent = await res.text();
 }
 
-function createCompanyCard(company) {
-  const article = document.createElement("article");
-  article.setAttribute("data-name", company.name);
-  article.setAttribute("data-desc", company.desc);
-  article.setAttribute("data-img", company.img);
-  article.setAttribute("data-url", company.url);
+// ---------------- PUT USER ----------------
+async function putUser() {
+    const id = document.getElementById("putId").value.trim();
+    if (!id) return alert("กรุณาระบุ user_id");
 
-  const logo = document.createElement("img");
-  logo.src = company.img;
-  logo.alt = company.name;
-  logo.width = 120;
-  logo.height = 120;
+    const data = {};
+    if (document.getElementById("putName").value.trim()) data.name = document.getElementById("putName").value.trim();
+    if (document.getElementById("putEmail").value.trim()) data.email = document.getElementById("putEmail").value.trim();
+    if (document.getElementById("putRole").value.trim()) data.role = document.getElementById("putRole").value.trim();
 
-  const title = document.createElement("h2");
-  title.textContent = company.name;
+    const res = await fetch(`${BASE_URL}/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+    });
 
-  const desc = document.createElement("p");
-  desc.textContent = company.desc;
-
-  const button = document.createElement("button");
-  button.type = "button";
-  button.className = "open-btn";
-  button.textContent = "รายละเอียด";
-
-  button.addEventListener("click", function () {
-    overlayTitle.textContent = company.name;
-    overlayDesc.textContent = company.desc;
-    overlayLogo.src = company.img;
-    overlayLogo.alt = company.name;
-    overlayLink.href = company.url;
-    openOverlay();
-  });
-
-  article.appendChild(logo);
-  article.appendChild(title);
-  article.appendChild(desc);
-  article.appendChild(button);
-
-  return article;
+    document.getElementById("putResult").textContent = await res.text();
 }
 
-function loadCompanies() {
-  fetch("companies.json")
-    .then((response) => response.json())
-    .then((data) => {
-      data.forEach((company) => {
-        const card = createCompanyCard(company);
-        companyList.appendChild(card);
-      });
-    })
-    .catch((error) => console.error("Error loading companies:", error));
+// ---------------- DELETE USER ----------------
+async function deleteUser() {
+    const id = document.getElementById("deleteId").value.trim();
+    if (!id) return alert("กรุณากรอก user_id");
+
+    const res = await fetch(`${BASE_URL}/${id}`, { method: "DELETE" });
+    document.getElementById("deleteResult").textContent = await res.text();
 }
-
-closeButton.addEventListener("click", closeOverlay);
-overlay.addEventListener("click", handleOverlayClick);
-
-loadCompanies();
